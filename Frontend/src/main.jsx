@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import rootReducer from "./Reducer/index.js";
+import rootReducer from "./reducer/index.js";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "../src/components/shared/ThemeContext";
 import { NotificationProvider } from "./components/shared/NotificationContext.jsx";
