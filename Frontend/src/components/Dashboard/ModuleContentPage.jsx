@@ -16,7 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import { customToast } from "../../utils/toast";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://intervyo.onrender.com/api";
 
 // ModuleContent component to render formatted content
 // function ModuleContent({ content }) {
@@ -630,7 +630,7 @@ function ModuleContentPage({ moduleId, onBack, onNextModule, onPrevModule }) {
       try {
         // Fetch module content
         const response = await fetch(
-          `http://localhost:5000/api/learning-hub/modules/${module._id}`,
+          `https://intervyo.onrender.com/api/learning-hub/modules/${module._id}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,

@@ -27,7 +27,7 @@ const {
   START_CONVERSATION_API
 } = interviewEndpoints;
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://intervyo.onrender.com';
 // export const createInterview = (interviewConfig, navigate,token) => {
 //   return async (dispatch) => {
 //     const toastId = toast.loading('Creating your interview...');

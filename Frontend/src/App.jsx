@@ -20,9 +20,11 @@ import LearningHub from './components/Dashboard/LearningHub';
 import LearningPlatform from './components/Dashboard/LearningHub';
 import BlogPlatform from './components/Blogs/BlogPlatform';
 import Achievements from './components/Dashboard/Achievements';
+import AIChatbot from './components/Chatbot/AiChatBot';
 
 function App() {
   return (
+    <>
       <Routes>
         <Route path='/' element = {<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -73,7 +75,10 @@ function App() {
           </ProtectedRoute>
         } 
       />
-        </Routes>
+      </Routes>
+
+      <AIChatbot defaultContext="general" />
+    </>
   );
 }
 

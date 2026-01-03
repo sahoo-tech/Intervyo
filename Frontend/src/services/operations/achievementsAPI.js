@@ -1,6 +1,6 @@
 // services/achievementService.js
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://intervyo.onrender.com/api';
 
 export const achievementService = {
   // Check for new achievements

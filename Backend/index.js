@@ -14,6 +14,8 @@ import dashboardRoutes from './routes/Dashboard.route.js';
 import leaderboardRoutes from './routes/Leaderboard.routes.js';
 import interviewSocket from './sockets/InterviewSocket.js';
 import achievementRoutes from './routes/achievement.routes.js';
+import chatbotRoutes from './routes/chatbot.route.js';
+import notificationRoutes from './routes/notification.route.js';
 import blogRoutes from './routes/blog.routes.js';
 import profileRoutes from './routes/Profile.route.js'
 import { dbConnect } from './config/db.js';
@@ -67,8 +69,9 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/learning-hub', learningHubRoutes);
 app.use('/api', blogRoutes);
-
+app.use('/api/notifications', notificationRoutes);
 app.use('/api/achievements', achievementRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -64,11 +64,11 @@ export default function Register() {
   };
 
   const handleGoogleSignup = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = 'https://intervyo.onrender.com/api/auth/google';
   };
 
   const handleGitHubSignup = () => {
-    window.location.href = 'http://localhost:5000/api/auth/github';
+    window.location.href = 'https://intervyo.onrender.com/api/auth/github';
   };
 
   return (

@@ -3,22 +3,22 @@ import { apiConnector } from '../apiconnector';
 import { interviewEndpoints } from '../apis';
 
 const INTERVIEW_ENDPOINTS = {
-  CREATE_INTERVIEW: 'http://localhost:5000/api/interviews/create',
-  GET_ALL_INTERVIEWS: 'http://localhost:5000/api/interviews/all',
-  GET_INTERVIEW: 'http://localhost:5000/api/interviews',
-  START_INTERVIEW: 'http://localhost:5000/api/interviews',
-  END_INTERVIEW: 'http://localhost:5000/api/interviews',
-  GET_SESSION: 'http://localhost:5000/api/interviews',
-  DELETE_INTERVIEW: 'http://localhost:5000/api/interviews',
+  CREATE_INTERVIEW: 'https://intervyo.onrender.com/api/interviews/create',
+  GET_ALL_INTERVIEWS: 'https://intervyo.onrender.com/api/interviews/all',
+  GET_INTERVIEW: 'https://intervyo.onrender.com/api/interviews',
+  START_INTERVIEW: 'https://intervyo.onrender.com/api/interviews',
+  END_INTERVIEW: 'https://intervyo.onrender.com/api/interviews',
+  GET_SESSION: 'https://intervyo.onrender.com/api/interviews',
+  DELETE_INTERVIEW: 'https://intervyo.onrender.com/api/interviews',
   
 };
 const {GET_RESULTS_API} = interviewEndpoints
 
 const AI_ENDPOINTS = {
-  GENERATE_QUESTIONS: 'http://localhost:5000/api/ai/generate-questions',
-  EVALUATE_ANSWER: 'http://localhost:5000/api/ai/evaluate-answer',
-  NEXT_QUESTION: 'http://localhost:5000/api/ai/next-question',
-  COMPLETE_INTERVIEW: 'http://localhost:5000/api/ai/complete-interview',
+  GENERATE_QUESTIONS: 'https://intervyo.onrender.com/api/ai/generate-questions',
+  EVALUATE_ANSWER: 'https://intervyo.onrender.com/api/ai/evaluate-answer',
+  NEXT_QUESTION: 'https://intervyo.onrender.com/api/ai/next-question',
+  COMPLETE_INTERVIEW: 'https://intervyo.onrender.com/api/ai/complete-interview',
 };
 
 

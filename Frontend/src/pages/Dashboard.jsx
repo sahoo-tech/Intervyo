@@ -12,12 +12,15 @@ import { ThemeContext } from '../components/shared/ThemeContext';
 import AchievementModal from '../components/Dashboard/AchievementModal'
 import { achievementService } from '../services/operations/achievementsAPI';
 import { getLearningProgress } from '../services/operations/learningHubAPI';
+import { useNotifications } from '../components/shared/NotificationContext';
+import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification, clearReadNotifications } from '../services/operations/notificationAPI';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
+   const { notifications, unreadCount, refreshNotifications, setNotifications, setUnreadCount } = useNotifications();
   
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -62,6 +65,98 @@ useEffect(() => {
   }
 }, [loading, token]);
 
+const handleNotificationClick = async (notification) => {
+    try {
+      // Mark as read if not already
+      if (!notification.isRead) {
+        await markNotificationAsRead(notification._id, token);
+        
+        // Update local state
+        setNotifications(prev => 
+          prev.map(n => n._id === notification._id ? { ...n, isRead: true } : n)
+        );
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      }
+
+      // Navigate to the link if it exists
+      if (notification.link) {
+        setShowNotifications(false);
+        navigate(notification.link);
+      }
+    } catch (error) {
+      console.error('Error handling notification click:', error);
+    }
+  };
+
+   const handleMarkAllAsRead = async () => {
+    try {
+      await markAllNotificationsAsRead(token);
+      
+      // Update local state
+      setNotifications(prev => 
+        prev.map(n => ({ ...n, isRead: true }))
+      );
+      setUnreadCount(0);
+    } catch (error) {
+      console.error('Error marking all as read:', error);
+    }
+  };
+
+  // Delete single notification
+  const handleDeleteNotification = async (e, notificationId) => {
+    e.stopPropagation();
+    
+    try {
+      await deleteNotification(notificationId, token);
+      
+      // Update local state
+      const deletedNotification = notifications.find(n => n._id === notificationId);
+      setNotifications(prev => prev.filter(n => n._id !== notificationId));
+      
+      if (deletedNotification && !deletedNotification.isRead) {
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      }
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+
+  // Clear all read notifications
+  const handleClearRead = async () => {
+    try {
+      await clearReadNotifications(token);
+      
+      // Update local state
+      setNotifications(prev => prev.filter(n => !n.isRead));
+    } catch (error) {
+      console.error('Error clearing read notifications:', error);
+    }
+  };
+
+  // Format time ago
+  const formatTimeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+    return new Date(date).toLocaleDateString();
+  };
+
+  // Get notification icon color
+  const getNotificationColor = (type) => {
+    const colors = {
+      achievement: 'from-purple-500 to-pink-500',
+      streak: 'from-orange-500 to-red-500',
+      level_up: 'from-yellow-500 to-orange-500',
+      resource: 'from-blue-500 to-cyan-500',
+      badge: 'from-yellow-400 to-orange-500',
+      subscription: 'from-purple-600 to-pink-600',
+      interview: 'from-emerald-500 to-green-500'
+    };
+    return colors[type] || 'from-gray-500 to-gray-600';
+  };
 // Handler for achievement modal close
 const handleAchievementModalClose = async () => {
   if (newAchievements.length > 0 && currentAchievementIndex < newAchievements.length) {
@@ -299,11 +394,11 @@ const handleAchievementModalClose = async () => {
     { title: 'Leaderboard', icon: Trophy, color: 'from-yellow-500 to-orange-500', description: 'View rankings', action: () => navigate('/leaderboard') }
   ];
 
-  const notifications = [
-    { id: 1, text: 'New achievement unlocked!', time: '2h ago', type: 'achievement' },
-    { id: 2, text: `Your streak is at ${user?.stats?.streak || 0} days. Keep going!`, time: '1d ago', type: 'streak' },
-    { id: 3, text: '5 new learning resources added', time: '2d ago', type: 'resource' }
-  ];
+  // const notifications = [
+  //   { id: 1, text: 'New achievement unlocked!', time: '2h ago', type: 'achievement' },
+  //   { id: 2, text: `Your streak is at ${user?.stats?.streak || 0} days. Keep going!`, time: '1d ago', type: 'streak' },
+  //   { id: 3, text: '5 new learning resources added', time: '2d ago', type: 'resource' }
+  // ];
 
   const getScoreGradient = (score) => {
     if (score >= 90) return 'from-emerald-400 to-green-500';

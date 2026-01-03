@@ -5,7 +5,7 @@ import {
   ChevronRight, Sparkles, X, ArrowLeft, Send, MoreVertical, Star
 } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://intervyo.onrender.com/api';
 
 // ============================================
 // MAIN BLOG PAGE

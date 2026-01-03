@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {Link, useNavigate} from "react-router-dom"
+import {logo} from "../assets/intervyologo.png"
 
 
 export default function LandingPage() {
@@ -202,7 +203,7 @@ export default function LandingPage() {
               <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center animate-pulse-glow">
                 <span className="text-white font-bold text-xl">AI</span>
               </div>
-              <span className="text-xl font-bold">InterviewPro</span>
+              <span className="text-xl font-bold">Intervyo</span>
             </div>
             
             <div className="hidden md:flex items-center gap-8">

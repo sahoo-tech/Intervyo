@@ -4,7 +4,7 @@ import { Search, BookOpen, Clock, TrendingUp, CheckCircle, Play, ChevronRight, S
 import ModuleContentPage from './ModuleContentPage';
 import { TopicDetailPage } from './TopicDetailPage';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://intervyo.onrender.com/api';
 
 export default function LearningHub() {
   const { token } = useSelector((state) => state.auth);

@@ -95,7 +95,7 @@ const InterviewRoom = () => {
     { value: "typescript", label: "TypeScript", icon: "TS" }
   ];
 
-  const SOCKET_URL = "http://localhost:5000";
+  const SOCKET_URL = "https://intervyo.onrender.com";
 
   // ============================================
   // INITIALIZATION

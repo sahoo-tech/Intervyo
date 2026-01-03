@@ -895,7 +895,7 @@ export default function EnhancedInterviewRoom() {
 
   // Initialize WebSocket
   useEffect(() => {
-    const socket = io('http://localhost:5000', {
+    const socket = io('https://intervyo.onrender.com', {
       transports: ['websocket'],
       reconnectionAttempts: 5
     });

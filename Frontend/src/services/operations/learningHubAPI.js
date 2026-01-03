@@ -2,7 +2,7 @@ import { toast } from 'react-hot-toast';
 import { apiConnector } from '../apiconnector';
 import { setUser, setLoading } from "../../slices/profileSlice";
 const LearningHubEndpoints = {
-  GET_LEARNING_PROGRESS: 'http://localhost:5000/api/learning-hub/my-learning',
+  GET_LEARNING_PROGRESS: 'https://intervyo.onrender.com/api/learning-hub/my-learning',
   
 };
 

@@ -16,7 +16,7 @@ export default function AuthCallback() {
       localStorage.setItem('token', token);
       
       // Fetch user data
-      fetch('http://localhost:5000/api/auth/me', {
+      fetch('https://intervyo.onrender.com/api/auth/me', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

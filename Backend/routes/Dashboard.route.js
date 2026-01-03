@@ -216,6 +216,8 @@ router.post('/update-streak', authenticate, async (req, res) => {
       lastInterviewDate.setHours(0, 0, 0, 0);
     }
 
+    const previousStreak = user.stats.streak;
+
     if (!lastInterviewDate || lastInterviewDate < today) {
       // Check if it's consecutive day
       if (lastInterviewDate) {
@@ -224,8 +226,15 @@ router.post('/update-streak', authenticate, async (req, res) => {
         if (diffDays === 1) {
           // Consecutive day - increment streak
           user.stats.streak += 1;
+          
+          // Check for streak milestones
+          await notificationService.notifyStreakMilestone(userId, user.stats.streak);
+          
         } else if (diffDays > 1) {
-          // Streak broken - reset to 1
+          // Streak broken - notify user
+          if (previousStreak > 0) {
+            await notificationService.notifyStreakBroken(userId, previousStreak);
+          }
           user.stats.streak = 1;
         }
       } else {
@@ -239,10 +248,13 @@ router.post('/update-streak', authenticate, async (req, res) => {
       // Check for streak badges
       if (user.stats.streak === 7) {
         await awardBadge(user, 'Week Warrior', '⚔️');
+        await notificationService.notifyBadgeEarned(userId, 'Week Warrior', '⚔️');
       } else if (user.stats.streak === 30) {
         await awardBadge(user, 'Monthly Master', '🏆');
+        await notificationService.notifyBadgeEarned(userId, 'Monthly Master', '🏆');
       } else if (user.stats.streak === 100) {
         await awardBadge(user, 'Century Champion', '💯');
+        await notificationService.notifyBadgeEarned(userId, 'Century Champion', '💯');
       }
     }
 
@@ -250,7 +262,8 @@ router.post('/update-streak', authenticate, async (req, res) => {
       success: true,
       data: {
         streak: user.stats.streak,
-        lastInterviewDate: user.stats.lastInterviewDate
+        lastInterviewDate: user.stats.lastInterviewDate,
+        streakBroken: previousStreak > user.stats.streak
       }
     });
   } catch (error) {
@@ -262,7 +275,6 @@ router.post('/update-streak', authenticate, async (req, res) => {
     });
   }
 });
-
 // ============================================
 // AWARD XP POINTS
 // ============================================
@@ -300,6 +312,10 @@ router.post('/award-xp', authenticate, async (req, res) => {
       
       // Award level-up badge
       await awardBadge(user, `Level ${newLevel} Achieved`, '🎖️');
+      
+      // Notify user of level up
+      await notificationService.notifyLevelUp(userId, newLevel);
+      await notificationService.notifyBadgeEarned(userId, `Level ${newLevel} Achieved`, '🎖️');
     }
 
     await user.save();
@@ -357,7 +373,6 @@ router.get('/badges', authenticate, async (req, res) => {
 // HELPER: AWARD BADGE
 // ============================================
 async function awardBadge(user, badgeName, icon) {
-  // Check if badge already exists
   const existingBadge = user.stats.badges?.find(b => b.name === badgeName);
   
   if (!existingBadge) {
