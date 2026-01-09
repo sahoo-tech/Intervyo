@@ -23,6 +23,7 @@ import AIChatbot from './components/Chatbot/AiChatBot';
 import NotFound from './pages/NotFound';
 import FAQ from './pages/FAQ';
 import Analytics from './pages/Analytics';
+import AdvancedFeaturesDashboard from './pages/AdvancedFeaturesDashboard';
 import ScrollToTop from './components/shared/ScrollToTop';
 import Footer from './components/shared/Footer';
 import TermsAndConditions from './pages/Terms';
@@ -61,6 +62,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Analytics />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/advanced-features"
+          element={
+            <ProtectedRoute>
+              <AdvancedFeaturesDashboard />
             </ProtectedRoute>
           }
         />
