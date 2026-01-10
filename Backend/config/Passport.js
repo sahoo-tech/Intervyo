@@ -6,6 +6,11 @@ import bcrypt from 'bcryptjs';
 import User from "../models/User.model.js"
 import dotenv from 'dotenv';
 dotenv.config();
+const generateAvatarGoogle = (seed) =>
+  `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(seed)}`;
+const generateAvatarGithub = (seed) =>
+  `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(seed)}`;
+
 // ========================================
 // 1. LOCAL STRATEGY (Email/Password)
 // ========================================
@@ -77,6 +82,20 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
             authProvider: 'google',
             isVerified: true,
           });
+          return done(null, user);
+        }
+        
+        const email = profile.emails[0].value;
+const avatarUrl = generateAvatarGoogle(email);
+        // Create new user
+        user = await User.create({
+          googleId: profile.id,
+          email: profile.emails[0].value,
+          name: profile.displayName,
+          profilePicture: avatarUrl,
+          authProvider: 'google',
+          isVerified: true, // Google emails are verified
+        });
 
           return done(null, user);
         } catch (error) {
@@ -133,6 +152,20 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
             isVerified: true,
             profile: { github: profile.username },
           });
+          return done(null, user);
+        }
+        
+const avatarUrl = generateAvatarGithub(email);
+        // Create new user
+        user = await User.create({
+          githubId: profile.id,
+          email,
+          name: profile.displayName || profile.username,
+          profilePicture: avatarUrl,
+          authProvider: 'github',
+          isVerified: true,
+          profile: { github: profile.username },
+        });
 
           return done(null, user);
         } catch (error) {
